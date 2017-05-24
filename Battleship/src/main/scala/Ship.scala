@@ -21,7 +21,7 @@ class Ship(size: Int, char: Char)  {
   //Coordinates is one cell of x and y where the ship could be placed horizontal(right of coordinate) or vertical(
   // down side)
 
-  def SetPosition(x: Int, y: Int, o: String): Unit = {
+  def SetPosition(y: Int, x: Int, o: String): Unit = {
       posX = x
       posY = y
 
@@ -46,13 +46,13 @@ object Ship {
   def main(args: Array[String]): Unit = {
     //Player 1 Ship config
     val carrier = new Ship(5, 'C')
-    carrier.SetPosition(2,3,"Vertical")
+    carrier.SetPosition(3,4,"Horizontal")
 
     val cruiser = new Ship(2, 'R')
-    cruiser.SetPosition(10,1,"Horizontal")
+    cruiser.SetPosition(9,2,"Vertical")
 
     val battleship = new Ship(4, 'B')
-    battleship.SetPosition(9,3,"Horizontal")
+    battleship.SetPosition(5,5,"Vertical")
 
     val submarine = new Ship(3, 'S')
     submarine.SetPosition(3,8,"Vertical")
@@ -95,5 +95,8 @@ object Ship {
 
     println(board1)
     println(board2)
+
+    board1.Attack(8,8)
+    println(board1.GetBoardState())
   }
 }

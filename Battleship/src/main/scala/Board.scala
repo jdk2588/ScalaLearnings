@@ -27,7 +27,7 @@ class Board {
     var (x, y, orientation) = ship.GetPosition()
 
     if ((orientation == "Vertical" && l+x-1 > board_size) || (orientation == "Horizontal" && l+y-1 > board_size))  {
-      println(s"${l} not appropriate for placing the ship")
+      println(s"${ship.GetRepr()} not appropriate for placing the ship")
       return
     }
 
@@ -50,7 +50,15 @@ class Board {
       boardState += (ship.GetRepr() -> ship)
   }
 
-//  def Attack()
+  def Attack(x: Int, y: Int): Unit = {
+    val bVal = getBoardValue(x-1, y-1)
+    if (bVal != '.') {
+      boardState(bVal).SetDamage()
+      println("Hit")
+    } else {
+      println("Miss")
+    }
+  }
 
   def GetBoardState() = {
       boardState
