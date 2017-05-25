@@ -6,14 +6,10 @@ import scala.collection.mutable
 class Player(n: String) {
 
   private val name = n
-  private val shipboard = new Board()
-  private val attackboard = new Board()
-
-  private var opponentsboard = new Board()
+  private val shipboard = new ShipBoard()
+  private val attackboard = new AttackBoard()
 
   private var ownships = Map.empty[Char, Ship]
-
-  private var previousattacks = mutable.Map.empty[(Int, Int), String]
 
   def GetName() = name
 
@@ -27,29 +23,27 @@ class Player(n: String) {
       ownships
   }
 
-  def PutShip(ship: Ship, y: Int, x: Int, o: String): Unit = {
-    shipboard.PlaceShipOnBoard(ship,y,x,o)
+  def PutShip(ship: Ship, x: Int, y: Int, o: String): Unit = {
+    shipboard.PlaceShipOnBoard(ship,x,y,o)
   }
 
   def GetOwnShips() = ownships
 
-  def GiveOwnBoard() = attackboard
+  def GetAttackBoard() = attackboard
+  def GetShipBoard() = shipboard
 
-  def SetOpponentsBoard(oboard: Board) = {
-      opponentsboard = oboard
-  }
+  def Attack(oaboard: AttackBoard, osboard: ShipBoard, x: Int, y: Int): Unit = {
+    if (oaboard.Check(x,y)) {
+      println("Already attacked at this point")
+      return
+    }
 
-  def Attack(x: Int, y: Int): Unit = {
-    if (previousattacks.contains((x,y))) return
-
-    if (opponentsboard.Check(x, y)) {
-      opponentsboard.MarkAttack(x, y)
-      previousattacks += ((x,y) -> "Hit")
+    if (osboard.Check(x, y)) {
+      osboard.MarkAttack(x, y)
+      oaboard.Record(x, y, 'H')
     } else {
-      previousattacks += ((x,y) -> "Miss")
+      oaboard.Record(x, y, 'M')
     }
   }
 
-  def GetOpponetsPreviousAttacks(player: Player) = player.GetOwnPreviousAttacks()
-  def GetOwnPreviousAttacks() = previousattacks
 }

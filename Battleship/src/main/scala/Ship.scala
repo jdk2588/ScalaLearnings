@@ -7,14 +7,14 @@ class Ship(size: Int, char: Char)  {
   private val length = size
   private val breadth = 1
   private val reprchar = char
-  private var damagelen = length
+  private var damage = 0
 
-  private var orientation = "horizontal"
+  private var orientation = "H"
   private var posX = 0
   private var posY = 0
 
   override def toString: String = s"PositionX: ${posX}, PositionY: ${posY}, Orientation: ${orientation}, " +
-    s"Length: ${length}, Safe: ${damagelen}"
+    s"Length: ${length}, Safe: ${damage}"
 
   def GetLength(): Int = length
 
@@ -26,7 +26,7 @@ class Ship(size: Int, char: Char)  {
       posY = y
 
       require(x<=10 && y<=10, "The X and Y coordinate should be <= 10")
-      require(List("Horizontal", "Vertical") contains o, "Orientation can be either Horizontal or Vertical")
+      require(List("H", "V") contains o, "Orientation can be either H or V")
       orientation = o
   }
 
@@ -34,92 +34,81 @@ class Ship(size: Int, char: Char)  {
     (posX, posY, orientation)
   }
 
-  def SetDamage() = damagelen -= 1
-  def GetDamage() = damagelen
+  def SetDamage() = if (damage <= length) damage += 1
+  def GetDamage() = damage
 
   def GetRepr() = reprchar
 }
 
 object Ship {
-  /*def main(args: Array[String]): Unit = {
-    //Player 1 Ship config
-    val carrier = new Ship(5, 'C')
-    carrier.SetPosition(3,4,"Horizontal")
 
-    val cruiser = new Ship(2, 'R')
-    cruiser.SetPosition(9,2,"Vertical")
-
-    val battleship = new Ship(4, 'B')
-    battleship.SetPosition(5,5,"Vertical")
-
-    val submarine = new Ship(3, 'S')
-    submarine.SetPosition(3,8,"Vertical")
-
-    val patrol = new Ship(1, 'P')
-    patrol.SetPosition(8,8,"Vertical")
-
-    val board1 = new Board()
-
-    board1.SetAShip(carrier)
-    board1.SetAShip(cruiser)
-    board1.SetAShip(battleship)
-    board1.SetAShip(submarine)
-    board1.SetAShip(patrol)
-
-    //Player 1 Ship config
-    val carrier2 = new Ship(5, 'C')
-    carrier2.SetPosition(2,3,"Horizontal")
-
-    val cruiser2 = new Ship(2, 'R')
-    cruiser2.SetPosition(7,7,"Vertical")
-
-    val battleship2 = new Ship(4, 'B')
-    battleship2.SetPosition(7,3,"Vertical")
-
-    val submarine2 = new Ship(3, 'S')
-    submarine2.SetPosition(3,8,"Horizontal")
-
-    val patrol2 = new Ship(1, 'P')
-    patrol2.SetPosition(6,2,"Vertical")
-
-    val board2 = new Board()
-
-    board2.SetAShip(carrier2)
-    board2.SetAShip(cruiser2)
-    board2.SetAShip(battleship2)
-    board2.SetAShip(submarine2)
-    board2.SetAShip(patrol2)
-
-
-    println(board1)
-    println(board2)
-
-    board1.Attack(8,8)
-    println(board1.GetBoardState())
-  }*/
   def main(args: Array[String]): Unit = {
     val player1 = new Player("Jaideep")
 
 
     for ((_,ship) <- player1.InitShips()) {
-      println(s"${player1.GetName()}, Enter y, x and orientation of ship ${ship.GetRepr()}. Give each input and press enter.")
-      var y,x,o = scala.io.StdIn.readLine()
-      player1.PutShip(ship,y.toInt,x.toInt,o)
+//      println(s"${player1.GetName()}, Enter y, x and [H,V] orientation of ship ${ship.GetRepr()}. Give each input and press enter.")
+//      var y,x,o = scala.io.StdIn.readLine()
+      ship.GetRepr() match {
+        case 'C' => player1.PutShip(ship,3,4,"H")
+        case 'R' => player1.PutShip(ship,6,2,"V")
+        case 'B' => player1.PutShip(ship,5,5,"V")
+        case 'S' => player1.PutShip(ship,7,6,"H")
+        case 'P' => player1.PutShip(ship,8,8,"V")
+      }
+
     }
 
     val player2 = new Player("Anurag")
 
     for ((_,ship) <- player2.InitShips()) {
-      println(s"${player2.GetName()}, Enter y, x and orientation of ship ${ship.GetRepr()}. Give each input and press enter.")
-      var a,b,o1 = scala.io.StdIn.readLine()
-      player2.PutShip(ship,a.toInt,b.toInt, o1)
+//      println(s"${player2.GetName()}, Enter y, x and orientation of ship ${ship.GetRepr()}. Give each input and press enter.")
+//      var a,b,o1 = scala.io.StdIn.readLine()
+      ship.GetRepr() match {
+        case 'C' => player2.PutShip(ship,2,3,"H")
+        case 'R' => player2.PutShip(ship,7,7,"V")
+        case 'B' => player2.PutShip(ship,5,3,"V")
+        case 'S' => player2.PutShip(ship,3,6,"H")
+        case 'P' => player2.PutShip(ship,4,2,"V")
+      }
     }
 
-//    player1.SetOpponentsBoard(player2.GiveOwnBoard())
-//    player2.SetOpponentsBoard(player1.GiveOwnBoard())
+    val game = new Game(player1, player2)
 
-//    player1.GetOpponetsPreviousAttacks(player2)
-//    player2.GetOpponetsPreviousAttacks(player1)
+    val p1ab = player1.GetAttackBoard()
+    val p1sb = player1.GetShipBoard()
+
+    val p2ab = player2.GetAttackBoard()
+    val p2sb = player2.GetShipBoard()
+
+    player1.Attack(p2ab,p2sb,4,2)
+    player2.Attack(p1ab,p1sb,4,2)
+    player1.Attack(p2ab,p2sb,5,5)
+    player2.Attack(p1ab,p1sb,6,3)
+    player1.Attack(p2ab,p2sb,1,1)
+    player2.Attack(p1ab,p1sb,6,2)
+
+    //Uncomment to see a finished state of game won by Player 1
+    /*player1.Attack(p2ab,p2sb,7,7)
+    player1.Attack(p2ab,p2sb,2,3)
+    player1.Attack(p2ab,p2sb,2,4)
+    player1.Attack(p2ab,p2sb,2,5)
+    player1.Attack(p2ab,p2sb,2,6)
+    player1.Attack(p2ab,p2sb,2,7)
+    player1.Attack(p2ab,p2sb,3,6)
+    player1.Attack(p2ab,p2sb,3,7)
+    player1.Attack(p2ab,p2sb,3,8)
+    player1.Attack(p2ab,p2sb,5,3)
+    player1.Attack(p2ab,p2sb,6,3)
+    player1.Attack(p2ab,p2sb,7,3)
+    player1.Attack(p2ab,p2sb,8,3)
+    player1.Attack(p2ab,p2sb,8,7)*/
+
+    println(p1ab)
+    println(p1sb)
+    println(p2ab)
+    println(p2sb)
+    game.CurrentState()
 
   }
 }
