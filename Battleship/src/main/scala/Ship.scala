@@ -38,12 +38,10 @@ class Ship(size: Int, char: Char)  {
   def GetDamage() = damagelen
 
   def GetRepr() = reprchar
-
-
 }
 
 object Ship {
-  def main(args: Array[String]): Unit = {
+  /*def main(args: Array[String]): Unit = {
     //Player 1 Ship config
     val carrier = new Ship(5, 'C')
     carrier.SetPosition(3,4,"Horizontal")
@@ -98,5 +96,30 @@ object Ship {
 
     board1.Attack(8,8)
     println(board1.GetBoardState())
+  }*/
+  def main(args: Array[String]): Unit = {
+    val player1 = new Player("Jaideep")
+
+
+    for ((_,ship) <- player1.InitShips()) {
+      println(s"${player1.GetName()}, Enter y, x and orientation of ship ${ship.GetRepr()}. Give each input and press enter.")
+      var y,x,o = scala.io.StdIn.readLine()
+      player1.PutShip(ship,y.toInt,x.toInt,o)
+    }
+
+    val player2 = new Player("Anurag")
+
+    for ((_,ship) <- player2.InitShips()) {
+      println(s"${player2.GetName()}, Enter y, x and orientation of ship ${ship.GetRepr()}. Give each input and press enter.")
+      var a,b,o1 = scala.io.StdIn.readLine()
+      player2.PutShip(ship,a.toInt,b.toInt, o1)
+    }
+
+//    player1.SetOpponentsBoard(player2.GiveOwnBoard())
+//    player2.SetOpponentsBoard(player1.GiveOwnBoard())
+
+//    player1.GetOpponetsPreviousAttacks(player2)
+//    player2.GetOpponetsPreviousAttacks(player1)
+
   }
 }

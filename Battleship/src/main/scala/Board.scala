@@ -3,6 +3,7 @@
   */
 import scala.collection.mutable
 
+
 class Board {
 
   private val board_size = 10
@@ -21,53 +22,45 @@ class Board {
   }
 
 
-  def SetAShip(ship: Ship): Unit = {
+  def PlaceShipOnBoard(ship: Ship,y: Int,x: Int,orientation: String): Unit = {
 
-    val  l = ship.GetLength()
-    var (x, y, orientation) = ship.GetPosition()
+    ship.SetPosition(y,x,orientation)
 
-    if ((orientation == "Vertical" && l+x-1 > board_size) || (orientation == "Horizontal" && l+y-1 > board_size))  {
-      println(s"${ship.GetRepr()} not appropriate for placing the ship")
-      return
-    }
+    println(ship.GetLength()+x-1)
+    require ((orientation == "Vertical" && ship.GetLength() + x - 1 < board_size) ||
+      (orientation == "Horizontal" && ship.GetLength() + y - 1 < board_size),
+      s"${ship.GetRepr()} not appropriate for placing the ship")
 
-    for (_ <- 0 to l - 1) {
-      if (getBoardValue(x-1, y-1) != '.') {
-         println(s"${x-1},${y-1} already occupied, cant place this ship with length ${l}")
-         return
-      }
-      else if (orientation == "Horizontal") {
-        setBoardValue(ship.GetRepr(), x - 1, y - 1)
-        y += 1
-      }
-      else if (orientation == "Vertical") {
 
-        setBoardValue(ship.GetRepr(), x - 1, y - 1)
-        x += 1
-      }
+    for (v <- 0 until ship.GetLength()) {
+
+      require ((orientation == "Vertical" && getBoardValue(x + v - 1, y - 1) == '.') ||
+        (orientation == "Horizontal" && getBoardValue(x - 1, y + v - 1) == '.'),
+      s"${x-1},${y-1} already occupied, cant place this ship with length ${ship.GetLength()}")
+
+      if (orientation == "Horizontal") setBoardValue(ship.GetRepr(), x - 1, y + v - 1)
+      else if (orientation == "Vertical") setBoardValue(ship.GetRepr(), x + v - 1, y - 1)
     }
 
       boardState += (ship.GetRepr() -> ship)
   }
 
-  def Attack(x: Int, y: Int): Unit = {
+  def Check(x: Int, y: Int): Boolean = {
     val bVal = getBoardValue(x-1, y-1)
-    if (bVal != '.') {
-      boardState(bVal).SetDamage()
-      println("Hit")
-    } else {
-      println("Miss")
-    }
+    if (bVal != '.') true else false
   }
 
-  def GetBoardState() = {
-      boardState
+  def MarkAttack(x: Int, y: Int): Unit = {
+    val bVal = getBoardValue(x-1, y-1)
+    boardState(bVal).SetDamage()
   }
+
+  def GetBoardState() = boardState
 
   override def toString: String = {
     var res = ""
-    for (i <- 0 to board_size-1) {
-      for (j <- 0 to board_size-1) {
+    for (i <- 0 until board_size) {
+      for (j <- 0 until board_size) {
         res += getBoardValue(i, j)
       }
       res += "\n"
