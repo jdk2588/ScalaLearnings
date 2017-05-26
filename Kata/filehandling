@@ -1,0 +1,4 @@
+//In scala file handling is done using 
+//scala.io.Source for opening the file file
+//though java classes such as FileReader can be used
+
