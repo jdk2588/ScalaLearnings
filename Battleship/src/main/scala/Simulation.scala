@@ -50,8 +50,8 @@ object Simulation extends App {
     player2.Attack(p1ab,p1sb,6,2)
 
     //Uncomment to see a finished state of game won by Player 1
-    /*player1.Attack(p2ab,p2sb,7,7)
-    player1.Attack(p2ab,p2sb,2,3)
+    player1.Attack(p2ab,p2sb,7,7)
+    /*player1.Attack(p2ab,p2sb,2,3)
     player1.Attack(p2ab,p2sb,2,4)
     player1.Attack(p2ab,p2sb,2,5)
     player1.Attack(p2ab,p2sb,2,6)

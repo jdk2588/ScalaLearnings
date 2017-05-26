@@ -14,33 +14,26 @@ class Board {
     board(y * board_size + x) = repr
   }
 
-  protected def getBoardValue(x: Int, y: Int): Char = {
-    board(y * board_size + x)
-  }
+  protected def getBoardValue(x: Int, y: Int): Char = board(y * board_size + x)
+
+
+  protected def formatBoard(x: Int, y: Int): String =
+    if (y == board_size-1) getBoardValue(x,y).toString + "\n" else getBoardValue(x,y).toString
+
 
   def Check(x: Int, y: Int): Boolean = {
-    val bVal = getBoardValue(x-1, y-1)
-    if (bVal != '.') true else false
+    if (getBoardValue(x-1, y-1) != '.') true else false
   }
 
   def GetBoardState() = boardState
 
-  override def toString: String = {
-    var res = ""
-    for (i <- 0 until board_size) {
-      for (j <- 0 until board_size) {
-        res += getBoardValue(i, j)
-      }
-      res += "\n"
-    }
-    res
-  }
+  override def toString: String =
+    (0 until board_size).flatMap(i => (0 until board_size).map((j) => formatBoard(i,j))).mkString("")
+
 }
 
 class AttackBoard extends Board {
-  def Record(x: Int, y: Int, status: Char): Unit = {
-    setBoardValue(status, x-1, y-1)
-  }
+  def Record(x: Int, y: Int, status: Char): Unit = setBoardValue(status, x-1, y-1)
 }
 
 class ShipBoard extends Board {
@@ -68,9 +61,7 @@ class ShipBoard extends Board {
   }
 
 
-  def MarkAttack(x: Int, y: Int): Unit = {
-    val bVal = getBoardValue(x-1, y-1)
-    boardState(bVal).SetDamage()
-  }
+  def MarkAttack(x: Int, y: Int): Unit = boardState(getBoardValue(x-1, y-1)).SetDamage()
+
 
 }

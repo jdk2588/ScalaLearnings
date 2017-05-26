@@ -1,5 +1,3 @@
-import scala.collection.mutable
-
 /**
   * Created by jaideep on 25/05/17.
   */
@@ -13,17 +11,12 @@ class Game(player1: Player, player2: Player) {
 
   def CurrentState() = {
 
-    var finished = false
-    var p2totdamage = 0
-    var p1totdamage = 0
+    val p1totdamage = p1.GetShipBoard().GetBoardState().values.map(
+      (s) => if (s.GetDamage() != 0) s.GetDamage() else 0).sum
 
-    for ((_,ship) <- p1.GetShipBoard().GetBoardState() if ship.GetDamage() != 0) {
-      p1totdamage += ship.GetDamage()
-    }
+    val p2totdamage = p2.GetShipBoard().GetBoardState().values.map(
+      (s) => if (s.GetDamage() != 0) s.GetDamage() else 0).sum
 
-    for ((_,ship) <- p2.GetShipBoard().GetBoardState() if ship.GetDamage() != 0) {
-      p2totdamage += ship.GetDamage()
-    }
 
     //Winner has lower damage score
     if (p1totdamage == MAX_DAMAGE || p2totdamage == MAX_DAMAGE) {
@@ -34,7 +27,6 @@ class Game(player1: Player, player2: Player) {
       else if (p2totdamage > p1totdamage) println(s"Game is still on, ${p1.GetName()} is winning")
       else if (p2totdamage == p1totdamage) println(s"Game is still on, both have done equal damage")
     }
-
   }
 
 }
