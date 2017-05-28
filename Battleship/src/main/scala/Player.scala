@@ -9,21 +9,21 @@ class Player(n: String) {
   private val shipboard = new ShipBoard()
   private val attackboard = new AttackBoard()
 
-  private var ownships = Map.empty[Char, Ship]
+  private var ownships = Map.empty[CharRepr, Ship]
 
   def GetName() = name
 
-  def InitShips(): Map[Char, Ship] = {
-      ownships += ('C' -> new Ship(5,'C'),
-      'B' -> new Ship(4,'B'),
-      'S' -> new Ship(3,'S'),
-      'R' -> new Ship(2,'R'),
-      'P' -> new Ship(1,'P'))
+  def InitShips(): Map[CharRepr, Ship] = {
+      ownships += (Carrier -> new Ship(5,Carrier),
+      Battleship -> new Ship(4, Battleship),
+      Submarine -> new Ship(3,Submarine),
+      Cruiser -> new Ship(2,Cruiser),
+      Patrol -> new Ship(1,Patrol))
 
       ownships
   }
 
-  def PutShip(ship: Ship, x: Int, y: Int, o: String): Unit = {
+  def PutShip(ship: Ship, x: Int, y: Int, o: Orient): Unit = {
     shipboard.PlaceShipOnBoard(ship,x,y,o)
   }
 
@@ -40,9 +40,9 @@ class Player(n: String) {
 
     if (osboard.Check(x, y)) {
       osboard.MarkAttack(x, y)
-      oaboard.Record(x, y, 'H')
+      oaboard.Record(x, y, Hit)
     } else {
-      oaboard.Record(x, y, 'M')
+      oaboard.Record(x, y, Miss)
     }
   }
 

@@ -1,14 +1,25 @@
+import apple.laf.JRSUIConstants.Orientation
+
 /**
   * Created by jaideep on 24/05/17.
   */
+trait Orient
 
-class Ship(size: Int, char: Char)  {
+case object Horrizontal extends Orient {
+  override def toString: String = "H"
+}
+
+case object Vertical extends Orient {
+  override def toString: String = "V"
+}
+
+class Ship(size: Int, char: CharRepr)  {
   private val length = size
   private val breadth = 1
   private val reprchar = char
   private var damage = 0
 
-  private var orientation = "H"
+  private var orientation: Orient = Horrizontal
   private var posX = 0
   private var posY = 0
 
@@ -20,16 +31,16 @@ class Ship(size: Int, char: Char)  {
   //Coordinates is one cell of x and y where the ship could be placed horizontal(right of coordinate) or vertical(
   // down side)
 
-  def SetPosition(y: Int, x: Int, o: String): Unit = {
+  def SetPosition(y: Int, x: Int, o: Orient): Unit = {
       posX = x
       posY = y
 
       require(x<=10 && y<=10, "The X and Y coordinate should be <= 10")
-      require(List("H", "V") contains o, "Orientation can be either H or V")
+      require(List(Horrizontal, Vertical) contains o, "Orientation can be either H or V")
       orientation = o
   }
 
-  def GetPosition(): (Int, Int, String) = {
+  def GetPosition(): (Int, Int, Orient) = {
     (posX, posY, orientation)
   }
 
