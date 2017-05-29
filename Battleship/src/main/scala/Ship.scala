@@ -6,11 +6,11 @@ import apple.laf.JRSUIConstants.Orientation
 trait Orient
 
 case object Horrizontal extends Orient {
-  override def toString: String = "H"
+  override def toString: String = "Horrizontal"
 }
 
 case object Vertical extends Orient {
-  override def toString: String = "V"
+  override def toString: String = "Vertica"
 }
 
 class Ship(size: Int, char: CharRepr)  {

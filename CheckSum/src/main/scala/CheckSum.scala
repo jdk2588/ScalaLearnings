@@ -15,7 +15,6 @@ object Sum {
 
   def calculate(s: String): Int = {
     if (cache.contains(s)) {
-      println("Returning from cache")
       cache(s)
     } else {
       val acc = new Sum
@@ -50,6 +49,5 @@ object CheckSum extends App {
   } else {
     value = args(0)
   }
-  println(value)
   println(Sum.calculate(value))
 }

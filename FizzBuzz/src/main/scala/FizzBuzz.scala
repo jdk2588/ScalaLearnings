@@ -38,7 +38,6 @@ object FizzBuzz {
 object Main {
   def main(args: Array[String]): Unit = {
     var fb = new FizzBuzz()
-    println(args(0))
     fb.printFB(args(0).toInt)
   }
 }*/

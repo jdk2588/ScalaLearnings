@@ -9,6 +9,7 @@ object Football {
     val lines = getData("football.dat") {
         l => !l.contains("--") 
     }
+
     var storage = lines.map(l => l.trim.split("\\s+"))
 
     val teamname = storage.map(y => y(1))
