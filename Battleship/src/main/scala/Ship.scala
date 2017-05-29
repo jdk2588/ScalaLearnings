@@ -10,42 +10,76 @@ case object Horrizontal extends Orient {
 }
 
 case object Vertical extends Orient {
-  override def toString: String = "Vertica"
+  override def toString: String = "Vertical"
 }
 
-class Ship(size: Int, char: CharRepr)  {
-  private val length = size
-  private val breadth = 1
-  private val reprchar = char
-  private var damage = 0
 
-  private var orientation: Orient = Horrizontal
-  private var posX = 0
-  private var posY = 0
+abstract class RollingStock {
+  val name: String
+}
 
-  override def toString: String = s"PositionX: ${posX}, PositionY: ${posY}, Orientation: ${orientation}, " +
-    s"Length: ${length}, Safe: ${damage}"
+abstract class Ship extends RollingStock {
+
+  require(List(Horrizontal, Vertical) contains orientation, "Orientation can be either Horrizontal or Vertical")
+
+  protected val length: Int
+  protected val breadth = 1
+
+  protected var damage: Int = 0
+
+  val reprchar: CharRepr
+
+  val orientation: Orient
 
   def GetLength(): Int = length
 
-  //Coordinates is one cell of x and y where the ship could be placed horizontal(right of coordinate) or vertical(
-  // down side)
+  def SetDamage(): Unit = if (damage <= length) damage += 1
+  def GetDamage(): Int = damage
 
-  def SetPosition(y: Int, x: Int, o: Orient): Unit = {
-      posX = x
-      posY = y
+  def GetRepr(): CharRepr = reprchar
 
-      require(x<=10 && y<=10, "The X and Y coordinate should be <= 10")
-      require(List(Horrizontal, Vertical) contains o, "Orientation can be either H or V")
-      orientation = o
+  override def toString: String = s"Orientation: $orientation, " + s"Length: $length, Safe: $damage"
+
+}
+
+
+//Companion object of Ship
+object Ship {
+  private class CarrierShip(val orientation: Orient) extends Ship {
+    val name = "Carrier ship"
+    val reprchar: CharRepr = Carrier
+    val length = 5
+
   }
 
-  def GetPosition(): (Int, Int, Orient) = {
-    (posX, posY, orientation)
+  private class BattleShip(val orientation: Orient) extends Ship {
+    val name = "Battle ship"
+    val reprchar: CharRepr = Battlechar
+    val length = 4
   }
 
-  def SetDamage() = if (damage <= length) damage += 1
-  def GetDamage() = damage
+  private class SubmarineShip(val orientation: Orient) extends Ship {
+    val name = "Submarine ship"
+    val reprchar: CharRepr = Submarine
+    val length = 3
+  }
 
-  def GetRepr() = reprchar
+  private class CruiserShip(val orientation: Orient) extends Ship {
+    val name = "Cruiser ship"
+    val reprchar = Cruiser
+    val length = 2
+  }
+
+  private class PatrolShip(val orientation: Orient) extends Ship {
+    val name = "Patrol ship"
+    val reprchar = Patrol
+    val length = 1
+  }
+
+
+  def carrier(orient: Orient): Ship = new CarrierShip(orient)
+  def battle(orient: Orient): Ship = new BattleShip(orient)
+  def submarine(orient: Orient): Ship = new SubmarineShip(orient)
+  def cruiser(orient: Orient): Ship = new CruiserShip(orient)
+  def patrol(orient: Orient): Ship = new PatrolShip(orient)
 }

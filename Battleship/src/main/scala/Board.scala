@@ -8,7 +8,7 @@ trait CharRepr
 case object Carrier extends CharRepr {
   override def toString: String = "C"
 }
-case object Battleship extends CharRepr {
+case object Battlechar extends CharRepr {
   override def toString: String = "B"
 }
 case object Submarine extends CharRepr {
@@ -33,11 +33,11 @@ case object Miss extends CharRepr {
 class Board {
   protected val board_size = 10
 
-  protected var board = Array.ofDim[CharRepr](board_size*board_size)
+  protected var board: Array[CharRepr] = Array.ofDim[CharRepr](board_size*board_size)
 
   protected val boardState = mutable.Map.empty[CharRepr, Ship]
 
-  protected def setBoardValue(repr: CharRepr, x: Int, y: Int) = {
+  protected def setBoardValue(repr: CharRepr, x: Int, y: Int): Unit = {
     board(y * board_size + x) = repr
   }
 
@@ -55,7 +55,7 @@ class Board {
     if (getBoardValue(x-1, y-1) != Dot) true else false
   }
 
-  def GetBoardState() = boardState
+  def GetBoardState(): mutable.Map[CharRepr, Ship] = boardState
 
   override def toString: String =
     (0 until board_size).flatMap(i => (0 until board_size).map((j) => formatBoard(i,j))).mkString("")
@@ -68,23 +68,21 @@ class AttackBoard extends Board {
 
 class ShipBoard extends Board {
 
-  def PlaceShipOnBoard(ship: Ship,x: Int,y: Int,orientation: Orient): Unit = {
+  def PlaceShipOnBoard(ship: Ship,x: Int,y: Int): Unit = {
 
-    ship.SetPosition(x,y,orientation)
-
-    require ((orientation == Vertical && ship.GetLength() + x - 1 < board_size) ||
-      (orientation == Horrizontal && ship.GetLength() + y - 1 < board_size),
+    require ((ship.orientation == Vertical && ship.GetLength() + x - 1 < board_size) ||
+      (ship.orientation == Horrizontal && ship.GetLength() + y - 1 < board_size),
       s"${ship.GetRepr()} not appropriate for placing the ship")
 
 
     for (v <- 0 until ship.GetLength()) {
 
-      require ((orientation == Vertical && getBoardValue(x + v - 1, y - 1) == Dot) ||
-        (orientation == Horrizontal && getBoardValue(x - 1, y + v - 1) == Dot),
+      require ((ship.orientation == Vertical && getBoardValue(x + v - 1, y - 1) == Dot) ||
+        (ship.orientation == Horrizontal && getBoardValue(x - 1, y + v - 1) == Dot),
       s"${x-1},${y-1} already occupied, cant place this ship with length ${ship.GetLength()}")
 
-      if (orientation == Horrizontal) setBoardValue(ship.GetRepr(), x - 1, y + v - 1)
-      else if (orientation == Vertical) setBoardValue(ship.GetRepr(), x + v - 1, y - 1)
+      if (ship.orientation == Horrizontal) setBoardValue(ship.GetRepr(), x - 1, y + v - 1)
+      else if (ship.orientation == Vertical) setBoardValue(ship.GetRepr(), x + v - 1, y - 1)
     }
 
       boardState += (ship.GetRepr() -> ship)

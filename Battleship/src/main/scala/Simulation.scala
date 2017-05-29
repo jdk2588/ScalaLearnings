@@ -5,33 +5,19 @@ object Simulation extends App {
 
     val player1 = new Player("Jaideep")
 
-
-    for ((_,ship) <- player1.InitShips()) {
-      //      Taking inputs from user
-      //      println(s"${player1.GetName()}, Enter y, x and [H,V] orientation of ship ${ship.GetRepr()}. Give each input and press enter.")
-      //      var y,x,o = scala.io.StdIn.readLine()
-      ship.GetRepr() match {
-        case Carrier => player1.PutShip(ship,3,4, Horrizontal)
-        case Cruiser => player1.PutShip(ship,6,2,Vertical)
-        case Battleship => player1.PutShip(ship,5,5,Vertical)
-        case Submarine => player1.PutShip(ship,7,6, Horrizontal)
-        case Patrol => player1.PutShip(ship,8,8, Vertical)
-      }
-    }
+    player1.PutShip(Ship.carrier(Horrizontal),3,4)
+    player1.PutShip(Ship.battle(Vertical),5,5)
+    player1.PutShip(Ship.cruiser(Vertical),6,2)
+    player1.PutShip(Ship.submarine(Horrizontal),7,6)
+    player1.PutShip(Ship.patrol(Vertical),8,8)
 
     val player2 = new Player("Anurag")
 
-    for ((_,ship) <- player2.InitShips()) {
-      //      println(s"${player2.GetName()}, Enter y, x and orientation of ship ${ship.GetRepr()}. Give each input and press enter.")
-      //      var a,b,o1 = scala.io.StdIn.readLine()
-      ship.GetRepr() match {
-        case Carrier => player2.PutShip(ship,2,3,Horrizontal)
-        case Cruiser => player2.PutShip(ship,7,7,Vertical)
-        case Battleship => player2.PutShip(ship,5,3,Vertical)
-        case Submarine => player2.PutShip(ship,3,6,Horrizontal)
-        case Patrol => player2.PutShip(ship,4,2,Vertical)
-      }
-    }
+    player2.PutShip(Ship.carrier(Horrizontal),2,3)
+    player2.PutShip(Ship.battle(Vertical),5,3)
+    player2.PutShip(Ship.cruiser(Vertical),7,7)
+    player2.PutShip(Ship.submarine(Horrizontal),3,6)
+    player2.PutShip(Ship.patrol(Vertical),4,2)
 
     val game = new Game(player1, player2)
 
@@ -50,7 +36,7 @@ object Simulation extends App {
 //
 //    //Uncomment to see a finished state of game won by Player 1
     player1.Attack(p2ab,p2sb,1,1)
-    /*player1.Attack(p2ab,p2sb,2,3)
+    player1.Attack(p2ab,p2sb,2,3)
     player1.Attack(p2ab,p2sb,2,4)
     player1.Attack(p2ab,p2sb,2,5)
     player1.Attack(p2ab,p2sb,2,6)
@@ -62,7 +48,8 @@ object Simulation extends App {
     player1.Attack(p2ab,p2sb,6,3)
     player1.Attack(p2ab,p2sb,7,3)
     player1.Attack(p2ab,p2sb,8,3)
-    player1.Attack(p2ab,p2sb,8,7)*/
+    player1.Attack(p2ab,p2sb,8,7)
+    player1.Attack(p2ab,p2sb,7,7)
 
     println(p1ab)
     println(p1sb)
