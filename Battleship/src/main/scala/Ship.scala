@@ -1,4 +1,3 @@
-import apple.laf.JRSUIConstants.Orientation
 
 /**
   * Created by jaideep on 24/05/17.

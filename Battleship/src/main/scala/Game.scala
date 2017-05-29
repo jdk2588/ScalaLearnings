@@ -1,6 +1,25 @@
+import scala.runtime.Nothing$
+
 /**
   * Created by jaideep on 25/05/17.
   */
+
+trait GameState {
+  val player: Player
+  val score: Int
+}
+
+case class Finished(player: Player, score: Int) extends GameState {
+  override def toString: String = player.GetName() + " won the game with damage of " + score.toString
+}
+
+case class StillGoing(player: Player, score: Int) extends GameState {
+  override def toString: String = player.GetName() + " won the game with scorediff " + score.toString
+}
+
+case class EqualState(player: Player, score: Int) extends GameState {
+  override def toString: String = "Both players at equal score: " + score.toString
+}
 
 
 class Game(player1: Player, player2: Player) {
@@ -9,7 +28,7 @@ class Game(player1: Player, player2: Player) {
   private val p1 = player1
   private val p2 = player2
 
-  def CurrentState() = {
+  def CurrentState(): GameState = {
 
     val p1totdamage = p1.GetShipBoard().GetBoardState().values.map(
       (s) => if (s.GetDamage() != 0) s.GetDamage() else 0).sum
@@ -17,16 +36,14 @@ class Game(player1: Player, player2: Player) {
     val p2totdamage = p2.GetShipBoard().GetBoardState().values.map(
       (s) => if (s.GetDamage() != 0) s.GetDamage() else 0).sum
 
+    if (p1totdamage == MAX_DAMAGE || p2totdamage == MAX_DAMAGE) Finished(
+      if (p1totdamage > p2totdamage) player2 else player1, p1totdamage min p2totdamage
+    )
 
-    //Winner has lower damage score
-    if (p1totdamage == MAX_DAMAGE || p2totdamage == MAX_DAMAGE) {
-      if (p1totdamage > p2totdamage) println(s"Game finished, won by ${p2.GetName()}")
-      else if (p2totdamage > p1totdamage) println(s"Game finished, won by ${p1.GetName()}")
-    } else {
-      if (p1totdamage > p2totdamage) println(s"Game is still on, ${p2.GetName()} is winning")
-      else if (p2totdamage > p1totdamage) println(s"Game is still on, ${p1.GetName()} is winning")
-      else if (p2totdamage == p1totdamage) println(s"Game is still on, both have done equal damage")
-    }
+    else if (p1totdamage > p2totdamage) StillGoing(player2, p1totdamage-p2totdamage)
+    else if (p2totdamage > p1totdamage) StillGoing(player1, p2totdamage-p1totdamage)
+    else EqualState(player1, p2totdamage)
+
   }
 
 }
