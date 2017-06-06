@@ -2,6 +2,10 @@
 /**
   * Created by jaideep on 24/05/17.
   */
+package ship
+
+import board._
+
 trait Orient
 
 case object Horrizontal extends Orient {

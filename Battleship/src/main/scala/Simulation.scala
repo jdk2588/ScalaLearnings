@@ -1,6 +1,9 @@
 /**
   * Created by jaideep on 25/05/17.
   */
+import player.Player
+import ship.{Ship, Horrizontal, Vertical}
+
 object Simulation extends App {
 
     val player1 = new Player("Jaideep")

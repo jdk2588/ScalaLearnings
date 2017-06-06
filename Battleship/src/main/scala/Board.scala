@@ -1,7 +1,10 @@
 /**
   * Created by jaideep on 24/05/17.
   */
+package board
+
 import scala.collection.mutable
+import ship._
 
 trait CharRepr
 
@@ -50,6 +53,8 @@ class Board {
   protected def formatBoard(x: Int, y: Int): String =
     if (y == board_size-1) getBoardValue(x,y).toString + "\n" else getBoardValue(x,y).toString
 
+
+  def BoardValue(x: Int, y: Int): CharRepr = getBoardValue(x-1,y-1)
 
   def Check(x: Int, y: Int): Boolean = {
     if (getBoardValue(x-1, y-1) != Dot) true else false
