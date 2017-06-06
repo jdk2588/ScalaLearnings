@@ -1,0 +1,18 @@
+TDD you know before hand what exactly you want to build
+Test Driven Development - 95%
+- write a test
+- run it to see red
+- implement code
+- run to see green 
+- refractor and repeat
+
+BDD was aimed for figuring out what to build, involves more people in hierarchy , minimize chances of misunderstandings
+Fill in test for each requirement and specifying  
+Behaviour Driven Development
+- think "behaviour" not "test"
+- specify behaviour before implementing it
+- focus each test on one bit of behaviour
+- test name should describe that behaviour in a "specification way"
+- test run output can become an artificat that facilitates communication.
+
+Define Base classes for your project

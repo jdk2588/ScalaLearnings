@@ -1,0 +1,6 @@
+- Module minimize coupling
+- Unlike Java multiple classes and multiple packages can exist in single file.
+- Use of packages as Java way
+
+- Scala has very flexible importing features, difference in Class,Packages,
+  Object and Traits is far smaller than Java. Can import from Class , Package , Object and even an Instance
