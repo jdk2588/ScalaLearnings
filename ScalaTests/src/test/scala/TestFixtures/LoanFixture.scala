@@ -77,7 +77,12 @@ class LoanFixture extends FlatSpec {
   }
 
   //This test needs the file fixture
-  "Testing" should "be productive" in withFile {
+    "Testing" should "be productive" in withFile {
+    (file, writer) =>
+      writer.write("productive")
+      writer.flush()
+      assert(file.length === 23)
+  }edTesting" should "be productive" in withFile {
     (file, writer) =>
       writer.write("productive")
       writer.flush()
