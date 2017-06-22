@@ -8,7 +8,7 @@ package com.kata13
 object StringUtils {
   implicit class CustomStringImprovements(val codeline: String) {
 
-    private val MatchCommentRE = """(^\/\*|^/+|\*/|\*).*""".r
+    private val MatchCommentRE = "(^\\/\\*|^/+|\\*/|\\*).*".r
 
     def ifisacomment: Boolean = {
       codeline match {

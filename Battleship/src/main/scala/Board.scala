@@ -86,8 +86,10 @@ class ShipBoard extends Board {
         (ship.orientation == Horrizontal && getBoardValue(x - 1, y + v - 1) == Dot),
       s"${x-1},${y-1} already occupied, cant place this ship with length ${ship.GetLength()}")
 
-      if (ship.orientation == Horrizontal) setBoardValue(ship.GetRepr(), x - 1, y + v - 1)
-      else if (ship.orientation == Vertical) setBoardValue(ship.GetRepr(), x + v - 1, y - 1)
+      ship.orientation match {
+        case Horrizontal => setBoardValue(ship.GetRepr(), x - 1, y + v - 1)
+        case Vertical => setBoardValue(ship.GetRepr(), x + v - 1, y - 1)
+      }
     }
 
       boardState += (ship.GetRepr() -> ship)

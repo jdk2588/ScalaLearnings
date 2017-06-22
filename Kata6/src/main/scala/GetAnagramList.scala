@@ -9,6 +9,7 @@ import scala.collection.mutable.ListBuffer
 object GetAnagramsList {
 
   val mapping: Map[Char, BigInt] = Map(
+    '\'' -> 103,
     'a' -> 2, 'b' -> 3, 'c' -> 5, 'd' -> 7,
     'e' -> 11, 'f' -> 13, 'g' -> 17, 'h' -> 19,
     'i' -> 23, 'j' -> 29, 'k' -> 31, 'l' -> 37,
@@ -26,9 +27,27 @@ object GetAnagramsList {
   def groupSameTypeAnagrams(l: ListBuffer[String]): mutable.HashMap[String, ListBuffer[String]] = {
     val hashmap: mutable.HashMap[String, ListBuffer[String]] = mutable.HashMap[String, ListBuffer[String]]()
 
-    for (n <- l) if (hashmap.contains(hashFunc(n))) hashmap(hashFunc(n)) += n
-    else hashmap(hashFunc(n)) = ListBuffer(n)
+    var value: String = ""
+
+    for (n <- l) {
+      value = hashFunc(n)
+      if (hashmap.contains(value)) hashmap(value) += n else hashmap(value) = ListBuffer(n)
+    }
     hashmap
+  }
+
+  def checkAnagramsonInput(str: String, l: ListBuffer[String]): ListBuffer[String] = {
+    val orig = hashFunc(str)
+
+    groupSameTypeAnagrams(l)(orig)
+  }
+
+  val ghashmap: mutable.HashMap[String, ListBuffer[String]] = mutable.HashMap[String, ListBuffer[String]]()
+
+  def takeOne(input: String) = {
+
+    val value = hashFunc(input)
+    if (ghashmap.contains(value)) ghashmap(value) += input else ghashmap(value) = ListBuffer(input)
   }
 
   def hashFunc(str: String): String = {

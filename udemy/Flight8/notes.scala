@@ -114,6 +114,7 @@ object L30 {
 
     val nada: Null = null
 
+    val s: String = nada
 
     //Any cannot be assigned null, as null is ineligible for implicit conversion
     //Int is Any not AnyRef, null is absence of Reference. null is subtype of

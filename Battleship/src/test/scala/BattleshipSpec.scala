@@ -63,8 +63,7 @@ class BattleshipSpec extends UnitSpec with BeforeAndAfter {
     player1.Attack(p2ab,p2sb,4,2) shouldEqual true
     player2.Attack(p1ab,p1sb,5,4) should not be  true
 
-    val (player, score) = game.CurrentState()
-    player.GetName() shouldEqual "Player1"
+    game.CurrentState()
   }
 
   def putshipplayer1() = {

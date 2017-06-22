@@ -38,9 +38,9 @@ object Simulation extends App {
     player2.Attack(p1ab,p1sb,6,2)
 //
 //    //Uncomment to see a finished state of game won by Player 1
-  /*  player1.Attack(p2ab,p2sb,1,1)
+    player1.Attack(p2ab,p2sb,1,1)
     player1.Attack(p2ab,p2sb,2,3)
-    player1.Attack(p2ab,p2sb,2,4)
+  /*  player1.Attack(p2ab,p2sb,2,4)
     player1.Attack(p2ab,p2sb,2,5)
     player1.Attack(p2ab,p2sb,2,6)
     player1.Attack(p2ab,p2sb,2,7)
@@ -58,6 +58,6 @@ object Simulation extends App {
     println(p1sb)
     println(p2ab)
     println(p2sb)
-    println(game.CurrentState())
+    game.CurrentState()
 
 }

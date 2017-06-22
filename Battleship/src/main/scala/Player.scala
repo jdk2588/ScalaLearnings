@@ -9,7 +9,7 @@ import scala.collection.mutable
   * Created by jaideep on 24/05/17.
   */
 
-class Player(n: String) {
+case class Player(n: String) {
 
   private val name = n
   private val shipboard = new ShipBoard()
@@ -19,6 +19,11 @@ class Player(n: String) {
 
   def PutShip(ship: Ship, x: Int, y: Int): Unit = {
     shipboard.PlaceShipOnBoard(ship,x,y)
+  }
+
+  def TotDamage(): Int = {
+    shipboard.GetBoardState().values.map(
+      (s) => if (s.GetDamage() != 0) s.GetDamage() else 0).sum
   }
 
   def GetAttackBoard(): AttackBoard = attackboard
